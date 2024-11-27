@@ -1,12 +1,13 @@
 package br.com.zebodega.vendas.rest.dto;
 
 import jakarta.persistence.Column;
+import jakarta.validation.constraints.Email;
 import lombok.Data;
 
 import java.time.LocalDate;
 
 @Data
-public class ClientDTO {
+public class ClienteDTO {
 
     @Column(name = "nome", length = 255, nullable = false)
     private String nome;
@@ -15,7 +16,7 @@ public class ClientDTO {
     @Column(name = "cpf", length = 14, nullable = false, unique = true)
     private String cpf;
 
-
+    @Email
     @Column(name = "email", length = 255, nullable = false, unique = true)
     private String email;
 
