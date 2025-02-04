@@ -1,34 +1,32 @@
 package br.com.zebodega.vendas.rest.dto;
 
-import jakarta.persistence.Column;
-import jakarta.validation.constraints.Email;
+import br.com.zebodega.vendas.model.ClienteModel;
 import lombok.Data;
+import org.modelmapper.ModelMapper;
 
 import java.time.LocalDate;
 
+/**
+ * DTO (Data Transfer Object) para encapsular dados do cliente em operações de entrada e saída na API.
+ */
 @Data
 public class ClienteDTO {
 
-    @Column(name = "nome", length = 255, nullable = false)
     private String nome;
-
-
-    @Column(name = "cpf", length = 14, nullable = false, unique = true)
     private String cpf;
-
-    @Email
-    @Column(name = "email", length = 255, nullable = false, unique = true)
     private String email;
-
-    @Column(name = "telefone", length = 14, nullable = false)
     private String telefone;
-
-    @Column(name = "dataNascimento", nullable = false)
     private LocalDate dataNascimento;
-
-    @Column(name = "sexo", length = 1, nullable = false)
     private String sexo;
-
-    @Column(name = "apelido", length = 255, nullable = true)
     private String apelido;
+
+    /**
+     * Converte o DTO (ClienteDTO) para sua entidade correspondente (ClienteModel).
+     *
+     * @return Uma instância de ClienteModel com os dados mapeados a partir do ClienteDTO.
+     */
+    public ClienteModel toModel() {
+        ModelMapper modelMapper = new ModelMapper();
+        return modelMapper.map(this, ClienteModel.class);
+    }
 }
