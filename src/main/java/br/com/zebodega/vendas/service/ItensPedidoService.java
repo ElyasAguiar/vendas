@@ -43,8 +43,8 @@ public class ItensPedidoService {
     public ItensPedidoDTO salvar(ItensPedidoModel novoItensPedido) {
         try {
             // Caso ocorra a tentaiva de salvar um item do pedido com o id pedido já existente, mostre a exceção abaixo.
-            if (itensPedidoRepository.existsByIdItensPedido(novoItensPedido.getIdPedido())) {
-                throw new ConstraintException("Já existe um itens pedido cadastrado com esse id pedido" + novoItensPedido.getIdPedido() + " !");
+            if (itensPedidoRepository.existsByIdItensPedido(novoItensPedido.getIdItensPedido())) {
+                throw new ConstraintException("Já existe um itens pedido cadastrado com esse id pedido" + novoItensPedido.getIdItensPedido() + " !");
             }
 
             return itensPedidoRepository.save(novoItensPedido).toDTO();
@@ -66,8 +66,8 @@ public class ItensPedidoService {
     public ItensPedidoDTO atualizar(ItensPedidoModel itensPedidoExistente) {
         try {
             // Caso ocorra a tentaiva de salvar um ietns do pedido com o id pedido já existente, mostre a exceção abaixo.
-            if (!itensPedidoRepository.existsByIdItensPedido(itensPedidoExistente.getIdPedido())) {
-                throw new ConstraintException("O Itens pedido " + itensPedidoExistente.getIdPedido() + " não foi encontrado!");
+            if (!itensPedidoRepository.existsByIdItensPedido(itensPedidoExistente.getIdItensPedido())) {
+                throw new ConstraintException("O Itens pedido " + itensPedidoExistente.getIdItensPedido() + " não foi encontrado!");
             }
 
             return itensPedidoRepository.save(itensPedidoExistente).toDTO();
