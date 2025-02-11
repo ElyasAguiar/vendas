@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -61,7 +62,11 @@ public class PedidoService {
         if (dataInicial.isAfter(dataFinal)) {
             throw new IllegalArgumentException("A data inicial não pode ser posterior à data final.");
         }
-        List<PedidoModel> pedidos = pedidoRepository.findByDataHoraBetweenAndAtivo(dataInicial, dataFinal, true);
+
+        LocalDateTime dataInicialDateTime = dataInicial.atStartOfDay();
+        LocalDateTime dataFinalDateTime = dataFinal.atStartOfDay().plusDays(1).minusSeconds(1);
+
+        List<PedidoModel> pedidos = pedidoRepository.findByDataHoraBetweenAndAtivo(dataInicialDateTime, dataFinalDateTime, true);
 
         return pedidos.stream()
                 .map(PedidoModel::getValorTotal)
