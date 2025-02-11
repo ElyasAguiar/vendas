@@ -8,7 +8,7 @@ import java.util.Optional;
 
 @Repository
 public interface FormaPagamentoRepository extends JpaRepository<FormaPagamentoModel, Long> {
-
-    // Método para buscar uma forma de pagamento pelo nome
     Optional<FormaPagamentoModel> findByNome(String nome);
+
+    boolean existsByIdFormaPagamento(Long idFormaPagamento);
 }

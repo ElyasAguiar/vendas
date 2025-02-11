@@ -9,6 +9,7 @@ import java.util.List;
 @Repository
 public interface ItensPedidoRepository extends JpaRepository<ItensPedidoModel, Long> {
 
-    // Método para buscar itens de pedido por idPedido
     List<ItensPedidoModel> findByIdPedido(Long idPedido);
+
+    boolean existsByIdItensPedido(Long idItensPedido);
 }

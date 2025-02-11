@@ -4,10 +4,6 @@ import br.com.zebodega.vendas.model.ClienteModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-/**
- * Repositório responsável por gerenciar as operações de persistência
- * relacionadas à entidade ClienteModel.
- */
 @Repository
 public interface ClienteRepository extends JpaRepository<ClienteModel, Long> {
 

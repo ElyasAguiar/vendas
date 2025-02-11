@@ -1,11 +1,13 @@
 package br.com.zebodega.vendas.model;
 
+import br.com.zebodega.vendas.rest.dto.ProdutoDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.modelmapper.ModelMapper;
 
 @Data
 @AllArgsConstructor
@@ -34,4 +36,8 @@ public class ProdutoModel {
     @Column(name = "ativo", nullable = false)
     private Boolean ativo; // Representa se o produto está ativo (bit)
 
+    public ProdutoDTO toDTO() {
+        ModelMapper modelMapper = new ModelMapper();
+        return modelMapper.map(this, ProdutoDTO.class);
+    }
 }

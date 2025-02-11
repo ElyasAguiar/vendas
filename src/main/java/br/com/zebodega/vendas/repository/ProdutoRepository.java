@@ -8,7 +8,7 @@ import java.util.Optional;
 
 @Repository
 public interface ProdutoRepository extends JpaRepository<ProdutoModel, Long> {
-
-    // Método para buscar um produto pelo nome
     Optional<ProdutoModel> findByNome(String nome);
+
+    boolean existsByNome(String nome);
 }

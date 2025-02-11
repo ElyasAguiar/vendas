@@ -1,19 +1,21 @@
 package br.com.zebodega.vendas.rest.dto;
 
-import jakarta.persistence.Column;
+import br.com.zebodega.vendas.model.UsuarioModel;
 import lombok.Data;
+import org.modelmapper.ModelMapper;
 
 @Data
 public class UsuarioDTO {
-    @Column(name = "userName", length = 255, nullable = false, unique = true)
     private String userName;
 
-    @Column(name = "password", length = 255, nullable = false)
     private String password;
 
-    @Column(name = "ativo", nullable = false)
     private Boolean ativo;
 
-    @Column(name = "idCliente", nullable = false)
     private Long idCliente;
+
+    public UsuarioModel toModel() {
+        ModelMapper modelMapper = new ModelMapper();
+        return modelMapper.map(this, UsuarioModel.class);
+    }
 }

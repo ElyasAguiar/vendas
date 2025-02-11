@@ -1,10 +1,12 @@
 package br.com.zebodega.vendas.model;
 
+import br.com.zebodega.vendas.rest.dto.ItensPedidoDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.modelmapper.ModelMapper;
 
 @Data
 @AllArgsConstructor
@@ -29,4 +31,8 @@ public class ItensPedidoModel {
     @Column(name = "idProduto", nullable = false)
     private Long idProduto;
 
+    public ItensPedidoDTO toDTO() {
+        ModelMapper modelMapper = new ModelMapper();
+        return modelMapper.map(this, ItensPedidoDTO.class);
+    }
 }

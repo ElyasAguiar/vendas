@@ -1,5 +1,6 @@
 package br.com.zebodega.vendas.model;
 
+import br.com.zebodega.vendas.rest.dto.UsuarioDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -7,6 +8,7 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.modelmapper.ModelMapper;
 
 @Data
 @AllArgsConstructor
@@ -38,4 +40,8 @@ public class UsuarioModel {
     @Column(name = "idCliente", nullable = false)
     private Long idCliente;
 
+    public UsuarioDTO toDTO() {
+        ModelMapper modelMapper = new ModelMapper();
+        return modelMapper.map(this, UsuarioDTO.class);
+    }
 }

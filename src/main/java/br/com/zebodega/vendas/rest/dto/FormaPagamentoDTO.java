@@ -1,14 +1,18 @@
 package br.com.zebodega.vendas.rest.dto;
 
-import jakarta.persistence.Column;
+import br.com.zebodega.vendas.model.FormaPagamentoModel;
 import lombok.Data;
+import org.modelmapper.ModelMapper;
 
 @Data
 public class FormaPagamentoDTO {
 
-    @Column(name = "nome", length = 255, nullable = false, unique = true)
     private String nome;
 
-    @Column(name = "descricao", length = 255, nullable = false)
     private String descricao;
+
+    public FormaPagamentoModel toModel() {
+        ModelMapper modelMapper = new ModelMapper();
+        return modelMapper.map(this, FormaPagamentoModel.class);
+    }
 }
