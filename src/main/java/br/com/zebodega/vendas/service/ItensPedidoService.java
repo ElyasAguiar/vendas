@@ -17,6 +17,14 @@ public class ItensPedidoService {
     private ItensPedidoRepository itensPedidoRepository;
 
     @Transactional(readOnly = true)
+    public List<ItensPedidoDTO> listarItensPorPedido(Long pedidoId) {
+        List<ItensPedidoModel> listaItensPedido = itensPedidoRepository.findByIdPedido(pedidoId);
+
+        return listaItensPedido.stream().map(ItensPedidoModel::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
     public ItensPedidoDTO obterItensPedidoPorId(Long idItensPedido) {
         return itensPedidoRepository.findById(idItensPedido)
                 .orElseThrow(() -> new ObjectNotFoundException("ItensPedido não encontrado!"))

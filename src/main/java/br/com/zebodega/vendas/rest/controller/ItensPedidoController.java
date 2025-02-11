@@ -33,6 +33,11 @@ public class ItensPedidoController {
         return ResponseEntity.status(HttpStatus.OK).body(itensPedido);
     }
 
+    @GetMapping("/pedido/{pedidoId}")
+    public ResponseEntity<List<ItensPedidoDTO>> listarItensPorPedido(@PathVariable Long pedidoId) {
+        return ResponseEntity.status(HttpStatus.OK).body(itensPedidoService.listarItensPorPedido(pedidoId));
+    }
+
     @PostMapping
     public ResponseEntity<ItensPedidoDTO> salvar(@Valid @RequestBody ItensPedidoModel novoItensPedido) {
         ItensPedidoDTO novoItensPedidoDTO = itensPedidoService.salvar(novoItensPedido);
