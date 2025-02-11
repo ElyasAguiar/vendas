@@ -61,7 +61,7 @@ public class PedidoService {
         if (dataInicial.isAfter(dataFinal)) {
             throw new IllegalArgumentException("A data inicial não pode ser posterior à data final.");
         }
-        List<PedidoModel> pedidos = pedidoRepository.findByDataCriacaoBetweenAndStatus(dataInicial, dataFinal, true);
+        List<PedidoModel> pedidos = pedidoRepository.findByDataHoraBetweenAndAtivo(dataInicial, dataFinal, true);
 
         return pedidos.stream()
                 .map(PedidoModel::getValorTotal)

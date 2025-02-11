@@ -15,6 +15,6 @@ public interface PedidoRepository extends JpaRepository<PedidoModel, Long> {
 
     boolean existsByNumeroPedido(String idPedido);
 
-    List<PedidoModel> findByDataCriacaoBetweenAndStatus(LocalDate dataInicial, LocalDate dataFinal, boolean status);
+    List<PedidoModel> findByDataHoraBetweenAndAtivo(LocalDate dataInicial, LocalDate dataFinal, boolean status);
 
 }
