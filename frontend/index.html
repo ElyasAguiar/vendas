@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplicativo de Vendas</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <header>
+        <h1>Aplicativo de Vendas</h1>
+    </header>
+    <main>
+        <div class="tabs">
+            <button class="tab-button" onclick="openTab(event, 'products')">Produtos</button>
+            <button class="tab-button" onclick="openTab(event, 'clients')">Clientes</button>
+            <button class="tab-button" onclick="openTab(event, 'payments')">Formas de Pagamento</button>
+            <button class="tab-button" onclick="openTab(event, 'orders')">Pedidos</button>
+            <button class="tab-button" onclick="openTab(event, 'revenue')">Faturamento</button>
+        </div>
+
+        <section id="products" class="tab-content">
+            <h2>Produtos</h2>
+            <button onclick="openNewProductModal()">Novo Produto</button>
+            <div id="product-list">
+                <!-- Produtos serão listados aqui -->
+            </div>
+            <div id="product-pagination" class="pagination"></div>
+        </section>
+
+        <section id="clients" class="tab-content" style="display:none;">
+            <h2>Clientes</h2>
+            <button onclick="openNewClientModal()">Novo Cliente</button>
+            <div id="client-list">
+                <!-- Clientes serão listados aqui -->
+            </div>
+            <div id="client-pagination" class="pagination"></div>
+        </section>
+
+        <section id="payments" class="tab-content" style="display:none;">
+            <h2>Formas de Pagamento</h2>
+            <button onclick="openNewPaymentMethodModal()">Nova Forma de Pagamento</button>
+            <div id="payment-method-list">
+                <!-- Formas de Pagamento serão listados aqui -->
+            </div>
+            <div id="payment-pagination" class="pagination"></div>
+        </section>
+
+        <section id="orders" class="tab-content" style="display:none;">
+            <h2>Pedidos</h2>
+            <button onclick="openNewOrderModal()">Novo Pedido</button>
+            <div id="order-list">
+                <!-- Pedidos serão listados aqui -->
+            </div>
+            <div id="order-pagination" class="pagination"></div>
+        </section>
+
+        <section id="revenue" class="tab-content" style="display:none;">
+            <h2>Faturamento</h2>
+            <label for="start-date">Data Inicial:</label>
+            <input type="date" id="start-date">
+            <label for="end-date">Data Final:</label>
+            <input type="date" id="end-date">
+            <button onclick="fetchRevenue()">Buscar Faturamento</button>
+            <div id="revenue-result">
+                <!-- Faturamento será exibido aqui -->
+            </div>
+        </section>
+    </main>
+
+    <div id="edit-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <form id="edit-form" onsubmit="saveChanges(event)">
+                <!-- Form fields will be dynamically added here -->
+                <button type="submit">Salvar</button>
+                <button type="button" onclick="deleteItem()">Excluir</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="new-order-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeNewOrderModal()">&times;</span>
+            <h2>Novo Pedido</h2>
+            <div id="product-selection-container">
+                <div id="product-selection">
+                    <!-- Produtos serão listados aqui para seleção -->
+                </div>
+                <div id="selected-products">
+                    <h3>Itens Selecionados</h3>
+                    <!-- Itens selecionados serão listados aqui -->
+                </div>
+            </div>
+            <label for="order-observation">Observação:</label>
+            <textarea id="order-observation" rows="3"></textarea>
+            <label for="payment-method">Forma de Pagamento:</label>
+            <select id="payment-method"></select>
+            <button onclick="saveNewOrder()">Salvar Pedido</button>
+        </div>
+    </div>
+
+    <div id="new-product-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeNewProductModal()">&times;</span>
+            <h2>Novo Produto</h2>
+            <form id="new-product-form" onsubmit="saveNewProduct(event)">
+                <label for="product-name">Nome:</label>
+                <input type="text" id="product-name" name="nome" required>
+                <label for="product-description">Descrição:</label>
+                <input type="text" id="product-description" name="descricao" required>
+                <label for="product-price">Preço:</label>
+                <input type="number" id="product-price" name="preco" step="0.01" required>
+                <button type="submit">Salvar Produto</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="new-client-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeNewClientModal()">&times;</span>
+            <h2>Novo Cliente</h2>
+            <form id="new-client-form" onsubmit="saveNewClient(event)">
+                <label for="client-name">Nome:</label>
+                <input type="text" id="client-name" name="nome" required>
+                <label for="client-cpf">CPF:</label>
+                <input type="text" id="client-cpf" name="cpf" required>
+                <label for="client-email">Email:</label>
+                <input type="email" id="client-email" name="email" required>
+                <label for="client-phone">Telefone:</label>
+                <input type="text" id="client-phone" name="telefone" required>
+                <label for="client-birthdate">Data de Nascimento:</label>
+                <input type="date" id="client-birthdate" name="dataNascimento" required>
+                <label for="client-gender">Sexo:</label>
+                <select id="client-gender" name="sexo" required>
+                    <option value="M">Masculino</option>
+                    <option value="F">Feminino</option>
+                    <option value="O">Outro</option>
+                </select>
+                <label for="client-nickname">Apelido:</label>
+                <input type="text" id="client-nickname" name="apelido" required>
+                <button type="submit">Salvar Cliente</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="new-payment-method-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeNewPaymentMethodModal()">&times;</span>
+            <h2>Nova Forma de Pagamento</h2>
+            <form id="new-payment-method-form" onsubmit="saveNewPaymentMethod(event)">
+                <label for="payment-method-name">Nome:</label>
+                <input type="text" id="payment-method-name" name="nome" required>
+                <label for="payment-method-description">Descrição:</label>
+                <input type="text" id="payment-method-description" name="descricao" required>
+                <button type="submit">Salvar Forma de Pagamento</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>
