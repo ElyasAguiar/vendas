@@ -50,8 +50,9 @@ public class ItensPedidoController {
         return ResponseEntity.status(HttpStatus.OK).body(itensPedidoAtualizadoDTO);
     }
 
-    @DeleteMapping
-    public void deletar(@Valid @RequestBody ItensPedidoModel itensPedidoExistente) {
-        itensPedidoService.deletar(itensPedidoExistente);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        itensPedidoService.deletar(itensPedidoService.obterItensPedidoPorId(id).toModel());
+        return ResponseEntity.noContent().build();
     }
 }
