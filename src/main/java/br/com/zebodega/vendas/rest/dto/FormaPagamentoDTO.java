@@ -6,6 +6,7 @@ import org.modelmapper.ModelMapper;
 
 @Data
 public class FormaPagamentoDTO {
+    private Long id;
 
     private String nome;
 

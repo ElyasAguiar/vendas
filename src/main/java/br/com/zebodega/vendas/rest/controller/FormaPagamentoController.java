@@ -45,9 +45,10 @@ public class FormaPagamentoController {
         return ResponseEntity.status(HttpStatus.OK).body(formaPagamentoExistenteDTO);
     }
 
-    @DeleteMapping
-    public void deletar(@Valid @RequestBody FormaPagamentoModel formaPagamentoModel) {
-        formaPagamentoService.deletar(formaPagamentoModel);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        formaPagamentoService.deletar(formaPagamentoService.obterPorId(id).toModel());
+        return ResponseEntity.noContent().build();
     }
 
 }

@@ -19,7 +19,8 @@ public class FormaPagamentoModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idFormaPagamento;
+    @Column(name = "id_forma_pagamento")
+    private Long id;
 
     @NotBlank(message = "O nome é obrigatório!")
     @NotNull(message = "O nome não pode ser nulo!")
