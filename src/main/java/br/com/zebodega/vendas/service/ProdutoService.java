@@ -59,7 +59,7 @@ public class ProdutoService {
     public ProdutoDTO atualizar(ProdutoModel produtoExistente) {
         try {
             // Caso ocorra a tentaiva de salvar um produto com o nome já existente, mostre a exceção abaixo.
-            if (!produtoRepository.existsByNome(produtoExistente.getNome())) {
+            if (!produtoRepository.existsById(produtoExistente.getId())) {
                 throw new ConstraintException("O produto " + produtoExistente.getNome() + " não foi encontrado!");
             }
 

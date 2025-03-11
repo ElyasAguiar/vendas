@@ -45,8 +45,15 @@ public class ProdutoController {
         return ResponseEntity.status(HttpStatus.OK).body(produtoAtualizadoDTO);
     }
 
-    @DeleteMapping
+    @DeleteMapping()
     public void deletar(@Valid @RequestBody ProdutoModel produtoExistente) {
         produtoService.deletar(produtoExistente);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteVenda(@PathVariable Long id) {
+        // Logic to delete the venda by id
+        produtoService.deletar(produtoService.obterPorId(id).toModel());
+        return ResponseEntity.noContent().build();
     }
 }
