@@ -74,11 +74,10 @@ public class ClienteController {
 
     /**
      * Deleta um cliente da base de dados.
-     *
-     * @param clienteModel ClienteModel contendo os dados do cliente a ser deletado.
      */
-    @DeleteMapping
-    public void deletar(@Valid @RequestBody ClienteModel clienteModel) {
-        clienteService.deletar(clienteModel);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deteleCliente(@PathVariable Long id) {
+        clienteService.deletar(clienteService.obterPorId(id).toModel());
+        return ResponseEntity.noContent().build();
     }
 }

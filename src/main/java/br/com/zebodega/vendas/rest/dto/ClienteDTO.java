@@ -11,7 +11,7 @@ import java.time.LocalDate;
  */
 @Data
 public class ClienteDTO {
-
+    private Long id;
     private String nome;
     private String cpf;
     private String email;

@@ -21,7 +21,8 @@ public class ClienteModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idCliente;
+    @Column(name = "id_cliente")
+    private Long id;
 
     @NotBlank(message = "O valor é obrigatório!")
     @NotNull(message = "O valor não pode ser nulo!")
