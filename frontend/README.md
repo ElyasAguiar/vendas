@@ -1,39 +1,39 @@
-# My Frontend App
+# Minha Aplicação Frontend
 
-This project is a frontend application designed to interact with a backend API for managing products, clients, payment methods, and orders.
+Este projeto é uma aplicação frontend projetada para interagir com uma API backend que gerencia produtos, clientes, formas de pagamento e pedidos.
 
-## Project Structure
+## Estrutura do Projeto
 
 ```
 my-frontend-app
-├── index.html        # Main HTML document
+├── index.html        # Documento HTML principal
 ├── css
-│   └── style.css     # Styles for the application
+│   └── style.css     # Estilos da aplicação
 ├── js
-│   └── script.js     # JavaScript functionality
-└── README.md         # Project documentation
+│   └── script.js     # Funcionalidades em JavaScript
+└── README.md         # Documentação do projeto
 ```
 
-## Setup Instructions
+## Instruções de Configuração
 
-1. **Clone the repository**:
+1. **Clone o repositório**:
    ```
    git clone <repository-url>
    cd my-frontend-app
    ```
 
-2. **Open the `index.html` file** in your web browser to view the application.
+2. **Abra o arquivo `index.html`** no seu navegador para visualizar a aplicação.
 
-## Usage Guidelines
+## Diretrizes de Uso
 
-- The application fetches data from the backend API located at `http://localhost:8080/api`.
-- Ensure that the backend server is running before accessing the frontend application.
-- The application allows users to view products, clients, payment methods, and orders.
+- A aplicação busca dados da API backend localizada em `http://localhost:8080/api`.
+- Certifique-se de que o servidor backend esteja em execução antes de acessar a aplicação frontend.
+- A aplicação permite que os usuários visualizem produtos, clientes, formas de pagamento e pedidos.
 
-## Contributing
+## Contribuições
 
-Feel free to submit issues or pull requests for any enhancements or bug fixes.
+Sinta-se à vontade para enviar issues ou pull requests para melhorias ou correções de bugs.
 
-## License
+## Licença
 
-This project is licensed under the MIT License.
+Este projeto está licenciado sob a Licença MIT.
