@@ -1,6 +1,7 @@
 package br.com.zebodega.vendas.model;
 
 import br.com.zebodega.vendas.rest.dto.PedidoDTO;
+import br.com.zebodega.vendas.rest.dto.PedidoResponseDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -45,16 +46,21 @@ public class PedidoModel {
     @Column(name = "observacao", length = 255)
     private String observacao;
 
-    @NotNull(message = "A forma de pagamento é obrigatória!")
-    @Column(name = "idFormaPagamento", nullable = false)
-    private Long idFormaPagamento;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idFormaPagamento")
+    private FormaPagamentoModel formaPagamento;
 
-    @NotNull(message = "O cliente é obrigatório!")
-    @Column(name = "idCliente", nullable = false)
-    private Long idCliente;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idCliente")
+    private ClienteModel cliente;
 
     public PedidoDTO toDTO() {
         ModelMapper modelMapper = new ModelMapper();
         return modelMapper.map(this, PedidoDTO.class);
+    }
+
+    public PedidoResponseDTO toResponseDTO() {
+        ModelMapper modelMapper = new ModelMapper();
+        return modelMapper.map(this, PedidoResponseDTO.class);
     }
 }

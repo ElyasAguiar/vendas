@@ -7,22 +7,20 @@ import org.modelmapper.ModelMapper;
 import java.time.LocalDateTime;
 
 @Data
-public class PedidoDTO {
+public class PedidoResponseDTO {
     private Long idPedido;
-
     private Float valorTotal;
-
+    private String numeroPedido;
+    private Boolean ativo;
+    private String observacao;
     private LocalDateTime dataHora;
 
-    private String numeroPedido;
+    private String nomeCliente;
+    private String emailCliente;
+    private String telefoneCliente;
 
-    private Boolean ativo;
+    private String descricaoFormaPagamento;
 
-    private String observacao;
-
-    private Long idFormaPagamento;
-
-    private Long idCliente;
 
     public PedidoModel toModel() {
         ModelMapper modelMapper = new ModelMapper();

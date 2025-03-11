@@ -1,9 +1,14 @@
 package br.com.zebodega.vendas.service;
 
 import br.com.zebodega.vendas.exception.*;
+import br.com.zebodega.vendas.model.ClienteModel;
+import br.com.zebodega.vendas.model.FormaPagamentoModel;
 import br.com.zebodega.vendas.model.PedidoModel;
+import br.com.zebodega.vendas.repository.ClienteRepository;
+import br.com.zebodega.vendas.repository.FormaPagamentoRepository;
 import br.com.zebodega.vendas.repository.PedidoRepository;
 import br.com.zebodega.vendas.rest.dto.PedidoDTO;
+import br.com.zebodega.vendas.rest.dto.PedidoResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +17,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,33 +26,67 @@ public class PedidoService {
     @Autowired
     private PedidoRepository pedidoRepository;
 
+    @Autowired
+    private ClienteRepository clienteRepository;
+
+    @Autowired
+    private FormaPagamentoRepository formaPagamentoRepository;
+
     @Transactional(readOnly = true)
-    public PedidoDTO obterPorId(Long id) {
+    public PedidoResponseDTO obterPorId(Long id) {
         PedidoModel pedido = pedidoRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException("Pedido com ID " + id + " não encontrado."));
-        return pedido.toDTO();
+        return pedido.toResponseDTO();
     }
 
     @Transactional(readOnly = true)
-    public List<PedidoDTO> obterTodos() {
-        List<PedidoModel> listaPedidos = pedidoRepository.findAll();
-        return listaPedidos.stream().map(PedidoModel::toDTO).collect(Collectors.toList());
+    public List<PedidoResponseDTO> obterTodos() {
+        List<PedidoModel> listaPedidos = pedidoRepository.findAllWithClienteAndFormaPagamento();
+        return listaPedidos.stream().map(PedidoModel::toResponseDTO).collect(Collectors.toList());
     }
 
     @Transactional
-    public PedidoDTO salvar(PedidoModel novoPedido) {
+    public PedidoResponseDTO salvar(PedidoDTO novoPedido) {
         if (pedidoRepository.existsByNumeroPedido(novoPedido.getNumeroPedido())) {
             throw new ConstraintException("Já existe um pedido cadastrado com esse número: " + novoPedido.getNumeroPedido() + " !");
         }
-        return pedidoRepository.save(novoPedido).toDTO();
+        ClienteModel cliente = this.clienteRepository.findById(novoPedido.getIdCliente())
+                .orElseThrow(() -> new ObjectNotFoundException("Cliente com ID " + novoPedido.getIdCliente() + " não encontrado."));
+        FormaPagamentoModel formaPagamento = this.formaPagamentoRepository.findById(novoPedido.getIdFormaPagamento())
+                .orElseThrow(() -> new ObjectNotFoundException("Forma de pagamento com ID " + novoPedido.getIdFormaPagamento() + " não encontrada."));
+
+        PedidoModel pedido = new PedidoModel();
+
+        pedido.setValorTotal(BigDecimal.valueOf(novoPedido.getValorTotal()));
+        pedido.setNumeroPedido(novoPedido.getNumeroPedido());
+        pedido.setAtivo(novoPedido.getAtivo());
+        pedido.setObservacao(novoPedido.getObservacao());
+        pedido.setDataHora(novoPedido.getDataHora() != null ? novoPedido.getDataHora() : LocalDateTime.now());
+        pedido.setCliente(cliente);
+        pedido.setFormaPagamento(formaPagamento);
+        this.pedidoRepository.save(pedido).toResponseDTO();
+        return this.aplicarDescontoPedido(pedido);
     }
 
     @Transactional
-    public PedidoDTO atualizar(PedidoModel pedidoExistente) {
+    public PedidoResponseDTO atualizar(PedidoDTO pedidoExistente) {
         if (!pedidoRepository.existsByNumeroPedido(pedidoExistente.getNumeroPedido())) {
             throw new ConstraintException("O Pedido " + pedidoExistente.getNumeroPedido() + " não foi encontrado!");
         }
-        return pedidoRepository.save(pedidoExistente).toDTO();
+        ClienteModel cliente = this.clienteRepository.findById(pedidoExistente.getIdCliente())
+                .orElseThrow(() -> new ObjectNotFoundException("Cliente com ID " + pedidoExistente.getIdCliente() + " não encontrado."));
+        FormaPagamentoModel formaPagamento = this.formaPagamentoRepository.findById(pedidoExistente.getIdFormaPagamento())
+                .orElseThrow(() -> new ObjectNotFoundException("Forma de pagamento com ID " + pedidoExistente.getIdFormaPagamento() + " não encontrada."));
+        PedidoModel pedidoUpdate = new PedidoModel();
+        pedidoUpdate.setIdPedido(pedidoExistente.getIdPedido());
+        pedidoUpdate.setValorTotal(BigDecimal.valueOf(pedidoExistente.getValorTotal()));
+        pedidoUpdate.setNumeroPedido(pedidoExistente.getNumeroPedido());
+        pedidoUpdate.setAtivo(pedidoExistente.getAtivo());
+        pedidoUpdate.setObservacao(pedidoExistente.getObservacao());
+        pedidoUpdate.setDataHora(pedidoExistente.getDataHora() != null ? pedidoExistente.getDataHora() : LocalDateTime.now());
+        pedidoUpdate.setCliente(cliente);
+        pedidoUpdate.setFormaPagamento(formaPagamento);
+        return pedidoRepository.save(pedidoUpdate).toResponseDTO();
     }
 
     @Transactional
@@ -74,7 +114,7 @@ public class PedidoService {
     }
 
     @Transactional
-    public BigDecimal aplicarDescontoPedido(PedidoModel pedido) {
+    public PedidoResponseDTO aplicarDescontoPedido(PedidoModel pedido) {
         if (!pedido.getAtivo()) {
             throw new BusinessRuleException("Apenas pedidos ativos podem receber descontos.");
         }
@@ -89,7 +129,6 @@ public class PedidoService {
         }
 
         pedido.setValorTotal(valorTotal.subtract(desconto));
-        pedidoRepository.save(pedido);
-        return pedido.getValorTotal();
+        return pedidoRepository.save(pedido).toResponseDTO();
     }
 }

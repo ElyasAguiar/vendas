@@ -18,7 +18,8 @@ public class ProdutoModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idProduto;
+    @Column(name = "id_produto")
+    private Long id;
 
     @NotBlank(message = "O nome é obrigatório!")
     @Column(name = "nome", length = 255, nullable = false)

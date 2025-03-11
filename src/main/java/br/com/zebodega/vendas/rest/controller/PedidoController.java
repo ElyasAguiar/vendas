@@ -2,8 +2,10 @@ package br.com.zebodega.vendas.rest.controller;
 
 import br.com.zebodega.vendas.model.PedidoModel;
 import br.com.zebodega.vendas.rest.dto.PedidoDTO;
+import br.com.zebodega.vendas.rest.dto.PedidoResponseDTO;
 import br.com.zebodega.vendas.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -21,31 +23,30 @@ public class PedidoController {
     private PedidoService pedidoService;
 
     @GetMapping
-    public List<PedidoDTO> obterTodos() {
+    public List<PedidoResponseDTO> obterTodos() {
         return pedidoService.obterTodos();
     }
 
     @GetMapping("/{id}")
-    public PedidoDTO obterPorId(@PathVariable Long id) {
+    public PedidoResponseDTO obterPorId(@PathVariable Long id) {
         return pedidoService.obterPorId(id);
     }
 
     @PostMapping
-    public PedidoDTO salvar(@RequestBody PedidoModel novoPedido) {
+    public PedidoResponseDTO salvar(@RequestBody PedidoDTO novoPedido) {
         return pedidoService.salvar(novoPedido);
     }
 
     @PutMapping("/{id}")
-    public PedidoDTO atualizar(@PathVariable Long id, @RequestBody PedidoModel pedidoAtualizado) {
+    public PedidoResponseDTO atualizar(@PathVariable Long id, @RequestBody PedidoDTO pedidoAtualizado) {
         pedidoAtualizado.setIdPedido(id);
         return pedidoService.atualizar(pedidoAtualizado);
     }
 
     @DeleteMapping("/{id}")
-    public void deletar(@PathVariable Long id) {
-        PedidoModel pedido = new PedidoModel();
-        pedido.setIdPedido(id);
-        pedidoService.deletar(pedido);
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        pedidoService.deletar(pedidoService.obterPorId(id).toModel());
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/faturamento")
@@ -53,9 +54,9 @@ public class PedidoController {
         return pedidoService.calcularFaturamentoPeriodo(dataInicial, dataFinal);
     }
 
-    @PostMapping("/{id}/desconto")
-    public BigDecimal aplicarDesconto(@PathVariable Long id) {
-        PedidoModel pedido = pedidoService.obterPorId(id).toModel();
-        return pedidoService.aplicarDescontoPedido(pedido);
-    }
+//    @PostMapping("/{id}/desconto")
+//    public BigDecimal aplicarDesconto(@PathVariable Long id) {
+//        PedidoModel pedido = pedidoService.obterPorId(id).toModel();
+//        return pedidoService.aplicarDescontoPedido(pedido);
+//    }
 }
